@@ -20,9 +20,14 @@ or
     python3 -m venv .venv
     pip install -r requirements.txt
 
+    # Config the smiles-render script.
+    chmod 751 smiles-render
+
     # Running the application.
-    python3 src/main [args]
     smiles-render [args]
+    
+    # or
+    python3 src/main [args]
 ```
 
 ## Usage

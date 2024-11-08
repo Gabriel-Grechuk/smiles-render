@@ -74,7 +74,7 @@ args = parser.parse_args()
 
 
 def render_smile(smile: str, output_path: str) -> None:
-    print(f"Rendering {smile} to {output_path}")
+    print(f"Rendering \033[32m{smile}\033[0m to \033[32m{output_path}\033[0m")
     m = Chem.MolFromSmiles(smile)
     img = Draw.MolToImage(m)
     img.save(output_path)

@@ -6,17 +6,40 @@ import re
 import csv
 
 
+supported_formats = [
+    "BLP",
+    "BMP",
+    "DDS",
+    "DIB",
+    "EPS",
+    "GIF",
+    "ICNS",
+    "ICO",
+    "IM",
+    "JPG",
+    "JPEG",
+    "MSP",
+    "PCX",
+    "PFM",
+    "PNG",
+    "PPM",
+    "TIFF",
+    "WEBP",
+    "XBM",
+]
+
+
 parser = argparse.ArgumentParser(
     prog="smiles-render",
     description="A simple CLI that receives smiles and renders its 2D visualization.",
     usage="""
          %(prog)s -s "NC(O)C(=O)O"
-         %(prog)s -s "NC(O)C(=O)O" --formmat jpg
+         %(prog)s -s "NC(O)C(=O)O" --format jpg
          %(prog)s -s "NC(O)C(=O)O" -o molecule1.png
          %(prog)s -f "molecules.csv" --smiles-column "smiles"
          %(prog)s -f "molecules.csv" --smiles-column "smiles" --names-column "molecule name"
          %(prog)s -f "molecules.csv" --smiles-column "smiles" --names-column "molecule name" --delimiter ';'
-         %(prog)s -f "molecules.csv" --smiles-column "smiles" --names-column "molecule name" --delimiter ';' --formmat jpg
+         %(prog)s -f "molecules.csv" --smiles-column "smiles" --names-column "molecule name" --delimiter ';' --format jpg
     """,
 )
 
@@ -59,11 +82,11 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--formmat",
+    "--format",
     nargs="?",
     type=str,
     default="png",
-    help="Output formmat (is overwriten by -o)",
+    help="Output format (is overwriten by -o)",
 )
 
 parser.add_argument(
@@ -117,10 +140,15 @@ def read_file(
 
 
 def process_args(args: argparse.Namespace) -> None:
+    # Check the selected output format.
+    if args.format:
+        if args.format.upper() not in supported_formats:
+            raise Exception(f"Image format {args.format.upper()} not supported")
+
     # Positional Argument
     if args.smiles:
         for smile in args.smiles:
-            render_smile(smile, f"{sanitize_file_name(smile)}.{args.formmat}")
+            render_smile(smile, f"{sanitize_file_name(smile)}.{args.format}")
 
         return
 
@@ -133,7 +161,7 @@ def process_args(args: argparse.Namespace) -> None:
         # No path smiles.
         elif not args.out:
             for smile in args.string:
-                render_smile(smile, f"{sanitize_file_name(smile)}.{args.formmat}")
+                render_smile(smile, f"{sanitize_file_name(smile)}.{args.format}")
 
             return
 
@@ -158,9 +186,9 @@ def process_args(args: argparse.Namespace) -> None:
 
         for smile, name in data:
             if name:
-                render_smile(smile, f"{sanitize_file_name(name)}.{args.formmat}")
+                render_smile(smile, f"{sanitize_file_name(name)}.{args.format}")
             else:
-                render_smile(smile, f"{sanitize_file_name(smile)}.{args.formmat}")
+                render_smile(smile, f"{sanitize_file_name(smile)}.{args.format}")
 
         return
 

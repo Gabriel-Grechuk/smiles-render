@@ -34,10 +34,10 @@ or
 
 ```bash
     smiles-render -s "NC(O)C(=O)O"
-    smiles-render -s "NC(O)C(=O)O" --formmat jpg
+    smiles-render -s "NC(O)C(=O)O" --format jpg
     smiles-render -s "NC(O)C(=O)O" -o molecule1.png
     smiles-render -f "molecules.csv" --smiles-column "smiles"
     smiles-render -f "molecules.csv" --smiles-column "smiles" --names-column "molecule name"
     smiles-render -f "molecules.csv" --smiles-column "smiles" --names-column "molecule name" --delimiter ';'
-    smiles-render -f "molecules.csv" --smiles-column "smiles" --names-column "molecule name" --delimiter ';' --formmat jpg
+    smiles-render -f "molecules.csv" --smiles-column "smiles" --names-column "molecule name" --delimiter ';' --format jpg
 ```

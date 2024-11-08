@@ -6,6 +6,29 @@ import re
 import csv
 
 
+supported_formmats = [
+    "BLP",
+    "BMP",
+    "DDS",
+    "DIB",
+    "EPS",
+    "GIF",
+    "ICNS",
+    "ICO",
+    "IM",
+    "JPG",
+    "JPEG",
+    "MSP",
+    "PCX",
+    "PFM",
+    "PNG",
+    "PPM",
+    "TIFF",
+    "WEBP",
+    "XBM",
+]
+
+
 parser = argparse.ArgumentParser(
     prog="smiles-render",
     description="A simple CLI that receives smiles and renders its 2D visualization.",
@@ -117,6 +140,11 @@ def read_file(
 
 
 def process_args(args: argparse.Namespace) -> None:
+    # Check the selected output formmat.
+    if args.formmat:
+        if args.formmat.upper() not in supported_formmats:
+            raise Exception(f"Image formmat {args.formmat.upper()} not supported")
+
     # Positional Argument
     if args.smiles:
         for smile in args.smiles:
